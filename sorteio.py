@@ -4,7 +4,7 @@ import sys
 import random
 import os
 
-class Sorteio:
+class Sorteio(object):
     def __init__(self, lista):
         self.lista = lista
 
@@ -12,9 +12,18 @@ class Sorteio:
         if len(self.lista):
             sorteado = random.choice(self.lista)
             self.lista.remove(sorteado)
+            self.log_sorteados(sorteado)
             return sorteado
         else:
-            return ""
+            return False
+
+    def log_sorteados(self, sorteado):
+        """
+            Armazeno no arquivo de log os participantes sorteados
+        """
+        log = open('participantes_sorteados.txt','a')
+        log.write(sorteado)
+        log.close()
 
 
 if __name__ == "__main__":
@@ -39,6 +48,9 @@ if __name__ == "__main__":
         if sorteado:
             os.system('cls' if os.name=='nt' else 'clear')
             print "\nO escolhido é: %s\n" % sorteado
-            raw_input("Aperte ENTER para sortear novamente...")
+            sair = raw_input("Aperte ENTER para sortear novamente\n e q para parar o sorteio! ")
+            if sair == 'q':
+                print "Sorteio encerrado!"
+                break
     else:
         print "Não há mais participantes!"
